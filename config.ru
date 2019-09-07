@@ -1,5 +1,6 @@
 require 'bundler/setup'
-require_relative 'resheet/app'
+
+Dir['./resheet/**/*.rb'].each { |f| require f }
 
 run Resheet::App
 
