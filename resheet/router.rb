@@ -14,7 +14,15 @@ module Resheet
           return Resheet::ErrorResponse.new
         end
 
-        Resheet::Response.new(sheet.records)
+        unless id = request.id
+          return Resheet::Response.new(sheet.records)
+        end
+
+        if record = sheet.find(id)
+          return Resheet::Response.new(record)
+        end
+
+        Resheet::ErrorResponse.new
       else
         Resheet::ErrorResponse.new
       end

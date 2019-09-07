@@ -23,6 +23,10 @@ module Resheet
     rescue Google::Apis::ClientError => error
       @error = error
     end
+
+    def find(id)
+      @records.find { |x| x['id'] == id }
+    end
   end
 end
 
