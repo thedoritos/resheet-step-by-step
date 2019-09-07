@@ -1,6 +1,5 @@
 require 'googleauth'
 require 'google/apis/sheets_v4'
-require 'json'
 
 module Resheet
   class App
@@ -14,14 +13,11 @@ module Resheet
       service = Google::Apis::SheetsV4::SheetsService.new
       service.authorization = credentials
 
-      sheet = Resheet::Sheet.new(service, ENV['SPREADSHEET_ID'], 'animations')
-      sheet.fetch
+      router = Resheet::Router.new(service, ENV['SPREADSHEET_ID'])
+      request = Resheet::Request.new(env)
+      response = router.route(request)
 
-      if error = sheet.error
-        return [500, {}, []]
-      end
-
-      [200, { 'Content-Type' => 'application/json' }, [JSON.generate(sheet.records)]]
+      response.to_rack
     end
   end
 end
